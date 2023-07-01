@@ -10,7 +10,11 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 
-
+/**
+ * TODO#9
+ *
+ *
+ */
 class MyIntentServiceAndJobScheduler : IntentService(SERVICE_NAME) {
 
     override fun onCreate() {
@@ -34,7 +38,7 @@ class MyIntentServiceAndJobScheduler : IntentService(SERVICE_NAME) {
     }
 
     private fun log(message: String) {
-        Log.d("Service_log", "MyForegroundService + $message")
+        Log.d("Service_log", "MyIntentServiceAndJobScheduler + $message")
     }
 
     companion object {

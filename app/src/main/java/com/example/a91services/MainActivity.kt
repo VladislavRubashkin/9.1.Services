@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
          * jobScheduler.schedule() - если запустить сервис с помощью метода schedule() - работать будет только последний,
          * все предыдущие сервисы будут отменены, если мы хотим выполнить их все, то их необходимо ставить в очередь на
          * выполнение - метод enqueue()
+         *
+         * TODO#9.1
+         *
+         *  startService(MyIntentServiceAndJobScheduler.newIntent(this, page++)) - до версии API26 - можно использовать
+         *  просто IntentService()
          */
         binding.jobScheduler.setOnClickListener {
             val componentName = ComponentName(this, MyJobService::class.java)
@@ -71,7 +76,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 startService(MyIntentServiceAndJobScheduler.newIntent(this, page++))
             }
+        }
 
+        binding.jobIntentService.setOnClickListener {
+            MyJobIntentService.enqueue(this, page++)
         }
     }
 
