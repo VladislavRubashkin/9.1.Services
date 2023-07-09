@@ -16,7 +16,7 @@ import kotlinx.coroutines.*
  * Для создания сервисов необходимо унаследоваться от класса Service()
  * По умолчанию код внутри сервиса выполняется на главном потоке
  * Четыре основных компонента android приложения: Activity, Service, Broadcast Receivers,
- *  Content Providers - регистрируются в Manifest
+ * Content Providers - регистрируются в Manifest
  * Чтобы запустить сервис, нужно вызвать метод startService() в активити и передать Intent в качестве параметра
  */
 class MyService : Service() {

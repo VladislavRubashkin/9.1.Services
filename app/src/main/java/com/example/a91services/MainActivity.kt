@@ -8,6 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.example.a91services.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -80,6 +83,36 @@ class MainActivity : AppCompatActivity() {
 
         binding.jobIntentService.setOnClickListener {
             MyJobIntentService.enqueue(this, page++)
+        }
+
+        binding.workManager.setOnClickListener {
+            /**
+             * TODO#11.1
+             *
+             * Получаем экземпляр WorkManager. В конструктор метода getInstance() передаём applicationContext а
+             * не this, чтобы избежать утечек памяти.
+             *
+             * Если запустить несколько экземпляров одного воркера:
+             * enqueueUniqueWork() - первым параметром принимает имя воркера, можно самостоятельно указать поведение,
+             * что делать если воркер ужу запущен.
+             * enqueue() - все воркеры начнут своё выполнение
+             *
+             * Что делать если работа уже запущена:
+             * ExistingWorkPolicy.APPEND - новый воркер будет положен в очередь, если какой-то воркер был закончен с ошибкой,
+             * то эта ошибка распространиться на все дальнейшие сервисы в очереди.
+             * ExistingWorkPolicy.APPEND_OR_REPLACE - новый воркер будет положен в очередь, в случае ошибки будет создана
+             * новая цепочка.
+             * ExistingWorkPolicy.REPLACE - старый воркер заменяется на новый
+             * ExistingWorkPolicy.KEEP - старый продолжит выполнение, новый - игнорируется
+             *
+             * OneTimeWorkRequest - принимает все параметры(напр page++) и ограничения(как у jobScheduler) на работу
+             */
+            val workManager = WorkManager.getInstance(applicationContext)
+            workManager.enqueueUniqueWork(
+                MyWorker.WORK_NAME,
+                ExistingWorkPolicy.APPEND,
+                MyWorker.makeRequest(page++)
+            )
         }
     }
 
